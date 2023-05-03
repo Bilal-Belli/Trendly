@@ -1,0 +1,46 @@
+{
+  "name": "express-bunyan-logger",
+  "version": "1.3.3",
+  "description": "a bunyan logger middleware for express",
+  "main": "index.js",
+  "scripts": {
+    "lint": "jshint index.js test/*.js",
+    "test": "npm run lint && mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/villadora/express-bunyan-logger.git"
+  },
+  "keywords": [
+    "express",
+    "logger",
+    "bunyan"
+  ],
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "lodash.has": "^4.5.2",
+    "lodash.set": "^4.3.2",
+    "useragent": "^2.2.1",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jshint": "^2.9.2",
+    "mocha": "^3.0.1",
+    "supertest": "^2.0.0",
+    "through2": "^2.0.1"
+  },
+  "readmeFilename": "README.md",
+  "author": {
+    "name": "wei.gao",
+    "email": "jky239@gmail.com"
+  },
+  "contributors": [
+    "Wei Gao <jky239@gmail.com>",
+    "Paris Holley <mail@parisholley.com>",
+    "Ognian Tschakalov <ognian.tschakalov@ogi-it.com>",
+    "Simon Wade <simon.wade@gmail.com>"
+  ],
+  "license": "BSD"
+}

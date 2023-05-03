@@ -1,0 +1,20 @@
+{
+  "name": "trendly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "esm": "^3.2.25",
+    "express": "^4.18.2",
+    "github-profile": "^1.0.1",
+    "github-trending": "^1.3.1",
+    "github-trending-api": "^1.0.3",
+    "node-fetch": "^3.3.1"
+  }
+}
