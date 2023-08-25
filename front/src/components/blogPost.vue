@@ -9,7 +9,7 @@
             <p class="mt-2 text-gray-600">{{ data.description }}</p>
         </div>
         <div class="flex justify-between items-center mt-4">
-            <a class="text-blue-500 hover:underline" :href="data.path">Read more</a>
+            <a class="text-blue-500 hover:underline" :href="data.path" target="_blank">Read more</a>
             <div>
                 <a class="flex items-center">
                     <!-- <img class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block" :src="data.image" alt="avatar"> -->
