@@ -5,7 +5,7 @@
 
 ## Demo
 <div align="center">
-   <img  src="">
+   <img  src="https://github.com/Bilal-Belli/Trendly/assets/74218805/d8be4fe5-c7f0-4cab-9755-550dbd350b6b">
 </div>
 
 ## Technologies
