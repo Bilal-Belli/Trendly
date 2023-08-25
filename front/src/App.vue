@@ -23,8 +23,8 @@
                 </div>
                 <div class="-mx-8 w-4/12 hidden lg:block">
                     <div class="mt-10 px-8">
-                        <h1 class="mb-4 text-xl font-bold text-gray-700">Categories</h1>
-                        <categories></categories>
+                        <h1 class="mb-4 text-xl font-bold text-gray-700">Developer Newspapers</h1>
+                        <Newspapers></Newspapers>
                     </div>
                 </div>
             </div>
@@ -35,11 +35,11 @@
 </template>
 
 <script>
-    import Navbar from "./components/navigation-navbar-simple";
-    import Post from "./components/elements-blog-post-article-review";
-    import Pagination from "./components/elements-pagination";
-    import Categories from "./components/sections-categories-list";
-    import SimpleFooter from "./components/navigation-footer-simple-with-icon";
+    import Navbar from "./components/simpleNavbar";
+    import Post from "./components/blogPost";
+    import Pagination from "./components/elementsPagination";
+    import Newspapers from "./components/newspapersList";
+    import SimpleFooter from "./components/simpleFooter";
 
     export default {
         name: 'app',
@@ -47,7 +47,7 @@
             Navbar,
             Post,
             Pagination,
-            Categories,
+            Newspapers,
             SimpleFooter
         },
         data() {
@@ -85,6 +85,7 @@
         }
     }
 </script>
+
 <style>
     @import "assets/css/app.css";
 

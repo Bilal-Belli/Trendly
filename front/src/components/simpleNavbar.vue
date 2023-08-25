@@ -3,11 +3,14 @@
         <div class="flex flex-col container mx-auto md:flex-row md:items-center md:justify-between">
             <div class="flex justify-between items-center">
                 <div>
-                    <a class="text-gray-800 text-xl font-bold md:text-2xl" href="#"><span class="text-blue-500">Trendly</span></a>
+                    <img src="..\..\public\logo.png" alt="logo">
+                </div>
+                <div>
+                    <a class="text-gray-800 text-xl font-bold md:text-2xl"><span class="text-blue-500">Trendly</span></a>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row md:-mx-4" :class="isOpen ? 'block' : ['hidden' , 'md:block']">
-                <a class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0" href="#">About us</a>
+                <a class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0" href="https://github.com/Bilal-Belli/Trendly" target="_blank">About</a>
             </div>
         </div>
     </nav>
