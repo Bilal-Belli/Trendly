@@ -28,7 +28,7 @@ const getTrendingRepos = async () => {
   try {
     const response = await axios.get(`https://api.github.com/search/repositories`, {
       headers: {
-        Authorization: `token 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`,
+        Authorization: `token your_github_token_here`,
       },
       params: {
         q: 'created:>2023-05-02',
@@ -69,7 +69,7 @@ function transformArrayDEVIO(originalArray) {
 }
 
 async function getTrendingArticlesDEVIO() {
-  const apiKey = 'iN4jqfe8czHLkyf7BASZjuPs';
+  const apiKey = 'your_api_token_here_devto';
   const articlesEndpoint_1 = 'https://dev.to/api/podcast_episodes';
   const articlesEndpoint_2 = 'https://dev.to/api/videos';
   try {
@@ -128,10 +128,10 @@ app.listen(3000, () => {
 // 
 // const Twitter = require('twitter');
 // const client = new Twitter({
-//     consumer_key: 'ATTp6dj7Et0lN66jQ4OzbIkPY',
-//     consumer_secret: 'hu6f5uBHThsEjpIU5QIMVfMPd0filmpwailC15QzXFKTFYU1HO',
-//     access_token_key: '1653420653490348035-XIVprXkOLtOWHWy5awExXgswlVMaT9',
-//     access_token_secret: 'WbRpnVf3GJ5lbxtms3MkGjtutmA9W10Rqhkkk4NLIk3y5'
+//     consumer_key: '...',
+//     consumer_secret: '...',
+//     access_token_key: '...',
+//     access_token_secret: '...'
 // });
 // const WOEID = 23424977; // WOEID for United States
 // client.get('/tweets/search/stream/rules', { id: WOEID }, function(error, trends, response) {
