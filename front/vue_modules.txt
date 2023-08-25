@@ -1,0 +1,11 @@
+﻿cli-plugin-babel
+cli-plugin-eslint
+cli-service
+autoprefixer
+babel-eslint
+core-js
+eslint-plugin-vue
+eslint
+tailwindcss
+vue-template-compiler
+vue
