@@ -1,28 +1,43 @@
 # Trendly (Web Application)
-> .
+> Trendly is a web application developed by Bilal Belli in 2023.
 
-> .
+> The goal is to help users stay up to date with the most popular repositories at present and provide tech news from around the world, including statistics, new tips, and more.
 
-## Sections
-#### 
-.
-#### 
-. 
-#### 
+## Demo
+<div align="center">
+   <img  src="">
+</div>
 
 ## Technologies
-<font color="gree"> ``VueJS`` </font> , <font color="green"> ``NodeJs`` </font> , <font color="pink"> ``Tailwind css`` </font> , <font color="yellow"> ``JavaScript`` </font> , <font color="orange"> ``HTML`` </font> , <font color="blue"> ``CSS`` </font>
-
+``VueJS`` , ``NodeJs`` , ``Tailwind css`` , ``JavaScript`` , ``HTML`` , ``CSS``
 ## Guide to run
-Terminal 1 (frontend) : run this commands:
-run this commands:
-``cd .\Trendly\font\``
-``npm install``
-``npm run serve``
+<p>Terminal 1 (frontend) : run this commands:</p>
+<ol>
+  <li> 
+  
+  ``cd .\Trendly\font\``</li>
+  <li> 
 
-Terminal 2 (backend) : run this commands:
-``cd .\Trendly\``
-``npm install``
-``nodemon server.js``
+  ``npm install``</li>
+  <li> 
+  
+  ``npm run serve``</li>
+</ol>
+<p>Terminal 2 (backend) : run this commands:</p>
+<ol>
+  <li> 
+  
+  ``cd .\Trendly\``</li>
+  <li>
+  
+  ``npm install``</li>
+  <li>
+  
+  ``nodemon server.js``</li>
+</ol>
+
 ## License
 This repository is licensed under the ``MIT License``.
+
+## For contributors
+Every collaborator is welcome to contribute to this repository.
