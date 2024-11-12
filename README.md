@@ -5,7 +5,7 @@
 
 ## Demo
 <div align="center">
-   <img  src="https://github.com/Bilal-Belli/Trendly/assets/74218805/d8be4fe5-c7f0-4cab-9755-550dbd350b6b">
+   <video width="514" alt="demoVideo" src="https://github.com/user-attachments/assets/48414b30-f528-46cd-b01c-a793c8311bcc">
 </div>
 
 ## Technologies
@@ -14,7 +14,6 @@
 <p>Terminal 1 (frontend) : run this commands:</p>
 <ol>
   <li> 
-  
   ``cd .\Trendly\font\``</li>
   <li> 
 
