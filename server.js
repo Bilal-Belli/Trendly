@@ -5,10 +5,10 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors()); // Use cors middleware
+app.use(cors());
 app.use(bodyParser.json());
 
-// Trends from github
+// ============ GITHUB ============
 async function transformArrayGithub(originalArray) {
   const transformedArray = [];
   originalArray.forEach((item, index) => {
@@ -48,11 +48,12 @@ const getTrendingRepos = async () => {
     });
     return repoList;
   } catch (error) {
-    console.error('Error fetching repos GITHUB.COM :',error);
+    console.error('Error fetching repos GITHUB.COM :', error);
+    return [];
   }
 };
 
-// Trends from dev.io
+// ============ DEV.IO ============
 function transformArrayDEVIO(originalArray) {
   const transformedArray = [];
   originalArray.forEach((item, index) => {
@@ -90,32 +91,260 @@ async function getTrendingArticlesDEVIO() {
       return {
         title: item.title,
         path: item.path,
-        userName: item.user?.name, // Use optional chaining to handle cases where user object might be absent
+        userName: item.user?.name,
         typeOf: item.type_of
       };
     });
     return extractedData;
   } catch (error) {
     console.error('Error fetching articles DEV.IO :', error);
+    return [];
   }
 }
 
-app.get('/getTrends',async (req, res) => {
+// ============ HACKER NEWS ============
+async function transformArrayHackerNews(originalArray) {
+  const transformedArray = [];
+  originalArray.forEach((item, index) => {
+    transformedArray.push({
+      id: index + 1,
+      tag: 'HackerNews',
+      title: item.title || 'Untitled',
+      description: `Score: ${item.score} | Comments: ${item.descendants} | By: ${item.by}`,
+      path: item.url || `https://news.ycombinator.com/item?id=${item.id}`,
+      userName: item.by || 'Unknown'
+    });
+  });
+  return transformedArray;
+}
+
+async function getTrendingHackerNews() {
   try {
-    const githubArticles = await getTrendingRepos();
-    const transformedArrayGithubResult = await transformArrayGithub(githubArticles);
+    // Get top stories IDs
+    const topStoriesResponse = await axios.get('https://hacker-news.firebaseio.com/v0/topstories.json');
+    const topStoryIds = topStoriesResponse.data.slice(0, 10);
+    
+    // Fetch details for each story
+    const storyPromises = topStoryIds.map(id => 
+      axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+    );
+    const storyResponses = await Promise.all(storyPromises);
+    const stories = storyResponses.map(response => response.data);
+    
+    // Filter for computer science related topics
+    const csKeywords = ['computer', 'science', 'algorithm', 'programming', 'code', 'developer', 'software', 'AI', 'machine learning', 'data', 'tech', 'github', 'react', 'python', 'javascript', 'rust', 'go', 'java'];
+    const csStories = stories.filter(story => 
+      story.title && csKeywords.some(keyword => 
+        story.title.toLowerCase().includes(keyword.toLowerCase())
+      )
+    );
+    
+    return csStories.slice(0, 5);
+  } catch (error) {
+    console.error('Error fetching Hacker News:', error);
+    return [];
+  }
+}
 
-    const devCommunityArticles = await getTrendingArticlesDEVIO();
-    const transformedArrayDEVIOResult = await transformArrayDEVIO(devCommunityArticles);
+// ============ REDDIT ============
+async function transformArrayReddit(originalArray) {
+  const transformedArray = [];
+  originalArray.forEach((item, index) => {
+    transformedArray.push({
+      id: index + 1,
+      tag: 'Reddit',
+      title: item.title,
+      description: `👍 ${item.ups} | 💬 ${item.num_comments} | r/${item.subreddit}`,
+      path: `https://reddit.com${item.permalink}`,
+      userName: item.author
+    });
+  });
+  return transformedArray;
+}
 
+async function getTrendingReddit() {
+  try {
+    // Get top posts from computer science related subreddits
+    const subreddits = ['MachineLearning', 'Programming', 'Python', 'javascript', 'golang', 'rust', 'learnprogramming', 'compsci', 'algorithms'];
+    const allPosts = [];
+    
+    for (const subreddit of subreddits) {
+      try {
+        const response = await axios.get(`https://www.reddit.com/r/${subreddit}/top.json`, {
+          params: {
+            limit: 3,
+            t: 'week'
+          },
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; TrendsBot/1.0)'
+          }
+        });
+        const posts = response.data.data.children.map(child => child.data);
+        allPosts.push(...posts);
+      } catch (error) {
+        console.error(`Error fetching r/${subreddit}:`, error.message);
+      }
+    }
+    
+    // Sort by upvotes and get top 5
+    const sortedPosts = allPosts.sort((a, b) => b.ups - a.ups);
+    return sortedPosts.slice(0, 5);
+  } catch (error) {
+    console.error('Error fetching Reddit:', error);
+    return [];
+  }
+}
+
+// ============ STACK OVERFLOW ============
+async function transformArrayStackOverflow(originalArray) {
+  const transformedArray = [];
+  originalArray.forEach((item, index) => {
+    transformedArray.push({
+      id: index + 1,
+      tag: 'StackOverflow',
+      title: item.title,
+      description: `👁️ ${item.view_count} | 👍 ${item.score} | 💬 ${item.answer_count} answers`,
+      path: item.link,
+      userName: item.owner?.display_name || 'Unknown'
+    });
+  });
+  return transformedArray;
+}
+
+async function getTrendingStackOverflow() {
+  try {
+    // Get recent questions with high scores in popular CS tags
+    const tags = ['javascript', 'python', 'java', 'c++', 'react', 'angular', 'vue.js', 'node.js', 'spring-boot', 'django'];
+    const allQuestions = [];
+    
+    for (const tag of tags) {
+      try {
+        const response = await axios.get('https://api.stackexchange.com/2.3/questions', {
+          params: {
+            order: 'desc',
+            sort: 'hot',
+            site: 'stackoverflow',
+            tagged: tag,
+            pagesize: 3,
+            filter: '!9_bDDxJY5' // Custom filter for basic fields
+          }
+        });
+        const questions = response.data.items;
+        allQuestions.push(...questions);
+      } catch (error) {
+        console.error(`Error fetching Stack Overflow tag ${tag}:`, error.message);
+      }
+    }
+    
+    // Sort by score and get top 5
+    const sortedQuestions = allQuestions.sort((a, b) => b.score - a.score);
+    return sortedQuestions.slice(0, 5);
+  } catch (error) {
+    console.error('Error fetching Stack Overflow:', error);
+    return [];
+  }
+}
+
+// ============ HASHNODE (Optional - Developer Blog Platform) ============
+async function transformArrayHashnode(originalArray) {
+  const transformedArray = [];
+  originalArray.forEach((item, index) => {
+    transformedArray.push({
+      id: index + 1,
+      tag: 'Hashnode',
+      title: item.title,
+      description: item.brief || 'Read more on Hashnode',
+      path: item.url,
+      userName: item.author?.username || 'Unknown'
+    });
+  });
+  return transformedArray;
+}
+
+async function getTrendingHashnode() {
+  try {
+    const query = `
+      query {
+        storiesFeed(type: NEW, first: 10) {
+          edges {
+            node {
+              id
+              title
+              brief
+              url
+              author {
+                username
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    
+    const response = await axios.post('https://gql.hashnode.com/', {
+      query: query
+    });
+    
+    const stories = response.data.data.storiesFeed.edges.map(edge => edge.node);
+    return stories.slice(0, 5);
+  } catch (error) {
+    console.error('Error fetching Hashnode:', error);
+    return [];
+  }
+}
+
+// ============ MAIN ENDPOINT ============
+app.get('/getTrends', async (req, res) => {
+  try {
+    // Fetch from all sources in parallel
+    const [
+      githubArticles,
+      devCommunityArticles,
+      hackerNewsArticles,
+      redditArticles,
+      stackOverflowArticles
+      // hashnodeArticles // Uncomment if you want to add Hashnode
+    ] = await Promise.all([
+      getTrendingRepos(),
+      getTrendingArticlesDEVIO(),
+      getTrendingHackerNews(),
+      getTrendingReddit(),
+      getTrendingStackOverflow()
+      // getTrendingHashnode()
+    ]);
+
+    // Transform all results
+    const [
+      transformedGithub,
+      transformedDEVIO,
+      transformedHackerNews,
+      transformedReddit,
+      transformedStackOverflow
+      // transformedHashnode
+    ] = await Promise.all([
+      transformArrayGithub(githubArticles),
+      transformArrayDEVIO(devCommunityArticles),
+      transformArrayHackerNews(hackerNewsArticles),
+      transformArrayReddit(redditArticles),
+      transformArrayStackOverflow(stackOverflowArticles)
+      // transformArrayHashnode(hashnodeArticles)
+    ]);
+
+    // Merge all trends
     const mergedMessages = [
-      ...transformedArrayGithubResult,
-      ...transformedArrayDEVIOResult
+      ...transformedGithub,
+      ...transformedDEVIO,
+      ...transformedHackerNews,
+      ...transformedReddit,
+      ...transformedStackOverflow
+      // ...transformedHashnode
     ].map((item, index) => ({ ...item, id: index + 1 }));
 
     res.json(mergedMessages);
   } catch (error) {
     console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to fetch trends' });
   }
 });
 
