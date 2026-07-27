@@ -1,7 +1,6 @@
 <template>
     <footer class="px-6 py-2 bg-gray-800 text-gray-100 ">
         <div class="flex flex-col justify-between items-center container mx-auto md:flex-row">
-            <a class="text-2xl font-bold" href="#">Bilal Belli</a>
             <p class="mt-2 md:mt-0">All rights reserved © 2023</p>
             <div class="flex -mx-2 mt-4 mb-2 md:mt-0 md:mb-0">
                 <a href="https://www.linkedin.com/in/belli-bilal/" class="mx-2 text-gray-100 hover:text-gray-400">
